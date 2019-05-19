@@ -72,4 +72,4 @@ def removeOneChannel (filesNameArray):
         outwave.close()
 
 #####################################################################################################################
-removeOneChannel (filesNameArray)
+#removeOneChannel (filesNameArray)
