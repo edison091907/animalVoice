@@ -22,8 +22,8 @@ keras.backend.set_session(sess)
 
 # 載入 data 資料夾的訓練資料，並自動分為『訓練組』及『測試組』
 X_train, X_test, y_train, y_test = get_train_test()
-X_train = X_train.reshape(X_train.shape[0], 20, 51, 1)
-X_test = X_test.reshape(X_test.shape[0], 20, 51, 1)
+X_train = X_train.reshape(X_train.shape[0], 20, 11, 1)
+X_test = X_test.reshape(X_test.shape[0], 20, 11, 1)
 
 # 類別變數轉為one-hot encoding
 y_train_hot = to_categorical(y_train)
@@ -85,9 +85,9 @@ class RestoreBestWeightsFinal(keras.callbacks.Callback):
             self.best_weights = self.model.get_weights()
 
 batch_size = 10
-epochs = 1000000000
+epochs = 10
 callbacks = []
-callbacks.append(keras.callbacks.EarlyStopping(monitor='val_acc', patience=3))
+#callbacks.append(keras.callbacks.EarlyStopping(monitor='val_acc', patience=3))
 callbacks.append(RestoreBestWeightsFinal())
 #callbacks.append(EarlyStoppingThreshold(monitor='loss', value=0.05))
 
@@ -134,7 +134,7 @@ optimizer = keras.optimizers.Adam()
 # 建立簡單的線性執行的模型
 model = Sequential()
 # 建立卷積層，filter=32,即 output size, Kernal Size: 2x2, activation function激活函式 採用 relu
-model.add(Conv2D(32, kernel_size=(3, 3), padding='same', activation=activation, input_shape=(20, 51, 1)))
+model.add(Conv2D(32, kernel_size=(3, 3), padding='same', activation=activation, input_shape=(20, 11, 1)))
 # 建立池化層，池化大小=2x2，取最大值
 model.add(MaxPooling2D(pool_size=(2, 2)))
 # Dropout層隨機斷開輸入神經元，用於防止過度擬合，斷開比例:0.25
@@ -170,34 +170,34 @@ model.save('ASR.h5')  # creates a HDF5 file 'model.h5'
 #print("labels=", get_labels())
 
 # 預測(prediction)
-mypath = "./test/0/"
+mypath = "./SpeechRecognition修改/test/0/"
 files = listdir(mypath)
 list1 = [0,0]
 list2 = [0,0]
-print("\nTest Level 0...")
+print("\nTest 0...")
 for f in files:
 	# 產生檔案的絕對路徑
 	fullpath = join(mypath, f)
 	#print("測試檔案：", fullpath)
 	mfcc = wav2mfcc(fullpath)
-	mfcc_reshaped = mfcc.reshape(1, 20, 51, 1)
+	mfcc_reshaped = mfcc.reshape(1, 20, 11, 1)
 	#print("predict=", np.argmax(model.predict(mfcc_reshaped)))
 	if np.argmax(model.predict(mfcc_reshaped))==0:
 		list1[0]= list1[0]+1
 	elif np.argmax(model.predict(mfcc_reshaped))==1:
 		list1[1]= list1[1]+1
 
-mypath = "./test/1/"
+mypath = "./SpeechRecognition修改/test/cat/"
 files = listdir(mypath)
 list2 = [0,0]
 
-print("Test Level 1...")
+print("Test cat...")
 for f in files:
 	# 產生檔案的絕對路徑
 	fullpath = join(mypath, f)
 	#print("測試檔案：", fullpath)
 	mfcc = wav2mfcc(fullpath)
-	mfcc_reshaped = mfcc.reshape(1, 20, 51, 1)
+	mfcc_reshaped = mfcc.reshape(1, 20, 11, 1)
 	#print("predict=", np.argmax(model.predict(mfcc_reshaped)))
 	if np.argmax(model.predict(mfcc_reshaped))==1:
 		list2[0]= list2[0]+1
@@ -206,18 +206,18 @@ for f in files:
 
 print("Finish\n")		
 
-print("\nLevel 0")
+print("\n0")
 print("----------------------------------------")
 print("0 Level All Data    :", list1[0]+list1[1], "\t個音檔")
 print("Classification For 0:", list1[0], "\t個音檔")
-print("Classification For 1:", list1[1], "\t個音檔")
+print("Classification For cat:", list1[1], "\t個音檔")
 print("----------------------------------------")
 print("CORRECT:", (list1[0]/(list1[0]+list1[1])), "  ", "ERROR:", (list1[1]/(list1[0]+list1[1])))
 
-print("\n\nLevel 1")
+print("\n\ncat")
 print("----------------------------------------")
-print("1 Level All Data    :", list2[0]+list2[1], "\t個音檔")
-print("Classification For 1:", list2[0], "\t個音檔")
+print("cat All Data    :", list2[0]+list2[1], "\t個音檔")
+print("Classification For cat:", list2[0], "\t個音檔")
 print("Classification For 0:", list2[1], "\t個音檔")
 print("----------------------------------------")
 print("CORRECT:", (list2[0]/(list2[0]+list2[1])), "  ", "ERROR:", (list2[1]/(list2[0]+list2[1])))

@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from keras.utils import to_categorical
 import numpy as np
 
-DATA_PATH = "./data/"
+DATA_PATH = "./SpeechRecognition修改/data/"
 
 # Input: Folder Path
 # Output: Tuple (Label, Indices of the labels, one-hot encoded labels)
@@ -20,7 +20,7 @@ def wav2mfcc(file_path, max_pad_len=11):
     wave, sr = librosa.load(file_path, mono=True, sr=None)
     wave = wave[::3]
     mfcc = librosa.feature.mfcc(wave, sr=41000)
-    print(mfcc.shape[1])
+    #print(mfcc.shape[1])
     pad_width = max_pad_len - mfcc.shape[1]
     mfcc = np.pad(mfcc, pad_width=((0, 0), (0, pad_width)), mode='constant')
     return mfcc
@@ -60,6 +60,4 @@ def get_train_test(split_ratio=0.7, random_state=42):
 
 
 #**********************************重要建立新的npy檔時需要使用  原本max_pad_len=11****************************
-
-save_data_to_array(path=DATA_PATH, max_pad_len=51)
-
+save_data_to_array(path=DATA_PATH, max_pad_len=11)
