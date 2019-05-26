@@ -60,4 +60,4 @@ def get_train_test(split_ratio=0.7, random_state=42):
 
 
 #**********************************重要建立新的npy檔時需要使用  原本max_pad_len=11****************************
-save_data_to_array(path=DATA_PATH, max_pad_len=11)
+#save_data_to_array(path=DATA_PATH, max_pad_len=11)

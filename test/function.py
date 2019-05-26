@@ -27,7 +27,7 @@ def cutSoundForMs (filesNameArray):
 
 def trans_mp3_to_wav (filepath):
     song = AudioSegment.from_mp3(filepath)
-    song.export("C:/Users/user/Desktop/test/animal/sheep/wav/sheep10.wav", format="wav")
+    song.export("./test/animal/sheep/wav/sheep10.wav", format="wav")
 #path = "C:/Users/user/Desktop/test/animal/sheep/sheep10.mp3"
 #trans_mp3_to_wav(path)
 
@@ -118,19 +118,24 @@ def processAudio(bpm,samplingRate,mypath):
 '''
 bpm = 240
 samplingRate = 44100
-mypath = r"C:/Users/user/Desktop/test/animal/cat/cutend/"
+mypath = r"./test/animal/cat/cutend/"
 classes,trainX,trainYa,valX,valY,testX,testY = processAudio(bpm,samplingRate,mypath)
 '''
 
-path = r"C:/Users/User/Google 雲端硬碟/筆電桌面/animalVoice/test/animal/cat/OneChannel/"
-filesNameArray = os.listdir(path)
-filesNameArray = [path + "\\" + f for f in filesNameArray if f.endswith('.wav')]
+outSidePath = r"./test/animal/"
+outSideFilesNameArray = os.listdir(outSidePath)
+outSideFilesNameArray = [outSidePath + f + '/OneChannel/' for f in outSideFilesNameArray]
+for i in range(len(outSideFilesNameArray)):
+	path = outSideFilesNameArray[i]
+	filesNameArray = os.listdir(path)
+	filesNameArray = [path + "\\" + f for f in filesNameArray if f.endswith('.wav')]
+	#cutSoundForMs(filesNameArray)
+	#removeOneChannel(filesNameArray)
 
-for i in range(len(filesNameArray)):
-	fileName = filesNameArray[i]
-	sr = 8000
-	y, s = librosa.load(fileName, sr=sr) # Downsample origin to sr = you want sample rate
-	librosa.output.write_wav(fileName.replace('.wav', '') + "sr16000.wav", y, sr, norm=False)
+	for i in range(len(filesNameArray)):
+		fileName = filesNameArray[i]
+		sr = 8000
+		y, s = librosa.load(fileName, sr=sr) # Downsample origin to sr = you want sample rate
+		librosa.output.write_wav(fileName.replace('.wav', '') + "sr16000.wav", y, sr, norm=False)
 
-print('!!!complete!!!')
-
+	print('!!!complete!!!')

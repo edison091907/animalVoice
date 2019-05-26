@@ -85,7 +85,7 @@ class RestoreBestWeightsFinal(keras.callbacks.Callback):
             self.best_weights = self.model.get_weights()
 
 batch_size = 10
-epochs = 10
+epochs = 50
 callbacks = []
 #callbacks.append(keras.callbacks.EarlyStopping(monitor='val_acc', patience=3))
 callbacks.append(RestoreBestWeightsFinal())
@@ -170,7 +170,7 @@ model.save('ASR.h5')  # creates a HDF5 file 'model.h5'
 #print("labels=", get_labels())
 
 # 預測(prediction)
-mypath = "./SpeechRecognition修改/test/0/"
+mypath = "./SpeechRecognition修改/test/pig/"
 files = listdir(mypath)
 list1 = [0,0]
 list2 = [0,0]
@@ -187,7 +187,7 @@ for f in files:
 	elif np.argmax(model.predict(mfcc_reshaped))==1:
 		list1[1]= list1[1]+1
 
-mypath = "./SpeechRecognition修改/test/cat/"
+mypath = "./SpeechRecognition修改/test/sheep/"
 files = listdir(mypath)
 list2 = [0,0]
 
